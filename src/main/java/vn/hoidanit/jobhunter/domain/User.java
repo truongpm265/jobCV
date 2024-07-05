@@ -8,9 +8,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 @Getter
@@ -23,6 +27,8 @@ public class User {
     private long id;
 
     private String name;
+
+    @NotBlank(message = "email khong duoc de trong")
     private String email;
     private String password;
 
@@ -37,36 +43,18 @@ public class User {
     private String createdBy;
     private String updatedBy;
 
-    public String getName() {
-        return name;
+   @PrePersist
+    public void handleBeforeCreateAt(){
+        this.createdAt = Instant.now();
+
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        ? SecurityUtil.getCurrentUserLogin().get() : "";
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @PreUpdate
+    public void handleBeforeUpdate(){
+        this.updatedAt = Instant.now();
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        ? SecurityUtil.getCurrentUserLogin().get() : "";
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
 }
