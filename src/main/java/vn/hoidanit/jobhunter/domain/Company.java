@@ -35,10 +35,12 @@ public class Company {
 
     private String logo;
 
-    @JsonFormat(pattern = "dd-MM-YYY HH:mm:ss a", timezone = "GTM+7")
+    private String address;
+
+    // @JsonFormat(pattern = "dd-MM-YYY HH:mm:ss a", timezone = "GTM+7")
     private Instant createdAt;
-    @JsonFormat(pattern = "dd-MM-YYY HH:mm:ss a", timezone = "GTM+7")
-    private Instant updateAt;
+    // @JsonFormat(pattern = "dd-MM-YYY HH:mm:ss a", timezone = "GTM+7")
+    private Instant updatedAt;
 
     private String createdBy;
 
@@ -57,7 +59,7 @@ public class Company {
         this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true 
         ? SecurityUtil.getCurrentUserLogin().get()
         : "";
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
 }

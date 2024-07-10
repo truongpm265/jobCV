@@ -48,6 +48,7 @@ public class CompanyService {
             Company currentCompany = companyOptional.get();
             currentCompany.setLogo(c.getLogo());
             currentCompany.setName(c.getName());
+            currentCompany.setAddress(c.getAddress());
             currentCompany.setDescription(c.getDescription());
             return this.companyRepository.save(currentCompany);
         }
