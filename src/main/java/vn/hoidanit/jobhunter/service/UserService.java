@@ -10,11 +10,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.Meta;
-import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.UpdateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserDTO;
-import vn.hoidanit.jobhunter.domain.dto.CreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 @Service
@@ -45,7 +44,7 @@ public class UserService {
     public ResultPaginationDTO fetchAllUser(Specification<User> spec, Pageable pageable) {
         Page<User> pageUser = this.userRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
 
         mt.setPage(pageable.getPageNumber() + 1);
         mt.setPageSize(pageable.getPageSize());
@@ -56,8 +55,8 @@ public class UserService {
         rs.setMeta(mt);
         rs.setResult(pageUser.getContent());
 
-        List<UserDTO> listUser = pageUser.getContent()
-        .stream().map(item -> new UserDTO(
+        List<ResUserDTO> listUser = pageUser.getContent()
+        .stream().map(item -> new ResUserDTO(
                 item.getId(),
                 item.getName(),
                 item.getEmail(),
@@ -91,8 +90,8 @@ public class UserService {
         return this.userRepository.existsByEmail(email);
     }
 
-    public CreateUserDTO convertToCreateUserDTO(User user){
-        CreateUserDTO res = new CreateUserDTO();
+    public ResCreateUserDTO convertToCreateUserDTO(User user){
+        ResCreateUserDTO res = new ResCreateUserDTO();
         res.setId(user.getId());
         res.setEmail(user.getEmail());
         res.setName(user.getName());
@@ -103,8 +102,8 @@ public class UserService {
         return res;
     }
 
-    public UpdateUserDTO convertToUpdateUserDTO(User user){
-        UpdateUserDTO res = new UpdateUserDTO();
+    public ResUpdateUserDTO convertToUpdateUserDTO(User user){
+        ResUpdateUserDTO res = new ResUpdateUserDTO();
         res.setId(user.getId());
         res.setName(user.getName());
         res.setAge(user.getAge());
@@ -114,8 +113,8 @@ public class UserService {
         return res;
     }
 
-    public UserDTO convertToUserDTO(User user){
-        UserDTO res = new UserDTO();
+    public ResUserDTO convertToUserDTO(User user){
+        ResUserDTO res = new ResUserDTO();
         res.setId(user.getId());
         res.setName(user.getName());
         res.setAge(user.getAge());

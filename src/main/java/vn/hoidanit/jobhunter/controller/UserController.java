@@ -23,10 +23,10 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.CreateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.UpdateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ApiMessage("add new user")
-    public ResponseEntity<CreateUserDTO> createNewUser(@Valid @RequestBody User postManUser) throws IdInvalidException{
+    public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postManUser) throws IdInvalidException{
         boolean isEmailExist = this.userService.isEmailExist(postManUser.getEmail());
         if(isEmailExist){
             throw new IdInvalidException("Email " + postManUser.getEmail() + "da ton tai vui long su dung email khac");
@@ -73,7 +73,7 @@ public class UserController {
     // fetch user by id
     @GetMapping("/users/{id}")
     @ApiMessage("fetch user by id")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") long id) throws IdInvalidException {
         User fetchUser = this.userService.fetchUserById(id);
         if(fetchUser == null){
             throw new IdInvalidException("User voi id = " + id +" khong ton tai");
@@ -93,7 +93,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<UpdateUserDTO> updateUser( @RequestBody User user) throws IdInvalidException {
+    public ResponseEntity<ResUpdateUserDTO> updateUser( @RequestBody User user) throws IdInvalidException {
         User currentUser = this.userService.handleUpdateUser(user);
         if(currentUser == null){
             throw new IdInvalidException("Id = "+ currentUser.getId() + " khong ton tai");

@@ -1,4 +1,4 @@
-package vn.hoidanit.jobhunter.domain.dto;
+package vn.hoidanit.jobhunter.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,7 +23,7 @@ public class ResLoginDTO {
         private String email;
         private String name;
     }
-    
+
     @Getter
     @Setter
     @NoArgsConstructor
